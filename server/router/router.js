@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import product from '../models/productSchema.js';
 import connection from '../database/db.js';
 import User from '../models/userSchema.js';
 connection();
@@ -31,6 +32,7 @@ router.post('/register', async (req, res) => {
         message: 'user already exist',
       });
     }
+
     // enter new register
     const user = new User({
       firstname,
@@ -40,14 +42,15 @@ router.post('/register', async (req, res) => {
       password,
       number,
     });
+    // hash password by bcrypt
     const userRegister = await user.save();
     if (userRegister) {
-      res.status(200).json({
+      return res.status(200).json({
         status: true,
         message: 'user register successfully',
       });
     } else {
-      res.status(502).json({
+      return res.status(502).json({
         status: false,
         message: 'user register fail',
       });
@@ -67,31 +70,42 @@ router.post('/login', async (req, res) => {
         message: 'plz fill the form ',
       });
     }
-    //hashing password
-    // const Salt = bcrypt.genSaltSync(10);
-    // const hashedPassword = bcrypt.hashSync(req.body.password, Salt)
 
-    const userLogin = await User.findOne({
-      email: email,
-      password: password,
-    });
+    const userLogin = await User.findOne({ email: email });
+
     if (userLogin) {
-      return res.status(200).json({
-        data: userLogin,
-        status: true,
-        message: 'user login exist',
-      });
+      const isMatch = await bcrypt.compare(password, userLogin.password);
+      if (!isMatch) {
+        return res.status(400).json({
+          status: false,
+          message: 'user login unsuccessfull',
+        });
+      } else {
+        return res.status(200).json({
+          data: userLogin,
+          status: true,
+          message: 'login  exist',
+        });
+      }
     } else {
-      return res.status(402).json({
+      return res.status(400).json({
         status: false,
-        message: 'login not exist',
+        message: 'invalid credentials',
       });
     }
-  } catch (error) {
-    return res.status(500).json({
-      status: false,
-      message: 'database error',
-    });
+  } catch (err) {
+    console.log('database error');
+  }
+});
+
+//  product fetch
+
+router.get('/products', async (req, res) => {
+  try {
+    let products = await product.find();
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: error.message });
   }
 });
 // module.export = router;
