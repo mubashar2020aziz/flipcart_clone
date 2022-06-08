@@ -1,9 +1,13 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import redux_thunk from 'redux-thunk';
-import { getProductsReducer } from './reducer/productReducer';
+import {
+  getProductsReducer,
+  getProductDetailsReducer,
+} from './reducer/productReducer';
 
 const reducer = combineReducers({
   getProducts: getProductsReducer,
+  getProductDetails: getProductDetailsReducer,
 });
 
 const middleware = [redux_thunk];

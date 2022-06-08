@@ -102,10 +102,20 @@ router.post('/login', async (req, res) => {
 
 router.get('/products', async (req, res) => {
   try {
-    let products = await product.find();
+    let products = await product.find({});
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.get('/product/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const products = await product.findOne({ id: id });
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 // module.export = router;
