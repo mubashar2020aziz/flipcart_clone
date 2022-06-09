@@ -34,12 +34,16 @@ const Timer = styled(Box)`
   align-items: center;
   color: #7f7f7f;
 `;
-const DealText = styled(Typography)`
-  font-size: 22px;
-  font-weight: 600;
-  margin-right: 25px;
-  line-height: 32px;
-`;
+const DealText = styled(Typography)(({ theme }) => ({
+  fontSize: '22px',
+  fontWeight: '600',
+  marginRight: '25px',
+  lineHeight: '32px',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '14px',
+  },
+}));
+
 const ViewButton = styled(Button)`
   margin-left: auto;
   background: #2874f0;
@@ -53,6 +57,7 @@ const Image = styled('img')({
 const Text = styled(Typography)`
   font-size: '12px';
   margin-top: '5px';
+  color: 'inherit';
 `;
 
 const Slide = ({ products, title, timer }) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './component/header/Header';
 import Home from './component/home/Home';
 import DetailView from './component/detail/DetailView';
+import Cart from './component/cart/Cart';
 import { Box } from '@mui/material';
 import DataProvider from './context/DataProvider';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -14,6 +15,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/product/:id" element={<DetailView />} />
+            <Route exact path="/cart" element={<Cart />} />
           </Routes>
         </Box>
       </Router>
