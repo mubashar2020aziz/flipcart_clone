@@ -4,6 +4,7 @@ import { ShoppingCart as Cart, FlashOn as Flash } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/actions/CartAction';
+import { PaymentPaypal } from '../services/Services';
 
 const LeftContainer = styled(Box)(({ theme }) => ({
   minWidth: '40%',
@@ -42,6 +43,10 @@ const ActionItem = ({ product }) => {
     dispatch(addToCart(id, quantity));
     navigate('/cart');
   };
+
+  const buyNow = () => {
+    PaymentPaypal();
+  };
   return (
     <LeftContainer>
       <Box
@@ -60,7 +65,11 @@ const ActionItem = ({ product }) => {
         <Cart />
         ADD TO CART
       </StyledButton>
-      <StyledButton variant="contained" style={{ background: '#fb541b' }}>
+      <StyledButton
+        variant="contained"
+        style={{ background: '#fb541b' }}
+        onClick={() => buyNow()}
+      >
         <Flash /> BUY NOW
       </StyledButton>
     </LeftContainer>

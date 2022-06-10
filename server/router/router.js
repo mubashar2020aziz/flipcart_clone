@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import product from '../models/productSchema.js';
 import connection from '../database/db.js';
 import User from '../models/userSchema.js';
+
 connection();
 router.post('/register', async (req, res) => {
   // fill the form
@@ -114,6 +115,13 @@ router.get('/product/:id', async (req, res) => {
     const id = req.params.id;
     const products = await product.findOne({ id: id });
     res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.post('/payment', async (req, res) => {
+  try {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
